@@ -11,6 +11,8 @@ DRAWscii will have:
 	- just like blindpaint, windows users can use it too (no macos, apple products suck)
 3. ~~DLL~~ shared library file
 	- currently no windows support because i don't have windows, only linux
+4. compiled code
+	- hell yeah no more file size measuring in megabytes!!!!!!!!!!!!!!!!!!!!
 
 ## why did you kill blindpaint?
 i didn't mean to kill it but i think it's just been perfected (it's not.)
