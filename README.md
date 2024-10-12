@@ -7,8 +7,8 @@ its objective of blindly painting is gone, sad, i know. but atleast you get to k
 DRAWscii will have:
 1. artwork viewing
 	- unlike blindpaint, you can see what you're drawing and improve it
-2. cross-platform support
-	- just like blindpaint, windows users can use it too (no macos, apple products suck)
+2. ~~cross-platform support~~
+	- ~~just like blindpaint, windows users can use it too (no macos, apple products suck)~~ due to a few issues with C++, there won't be pre-compiled binaries for windows
 3. ~~DLL~~ shared library file
 	- currently no windows support because i don't have windows, only linux
 4. compiled code
