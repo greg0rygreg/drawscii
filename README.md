@@ -22,7 +22,7 @@ if you want it to come back try forking it and adding what you want (no brainrot
 ## how do i run it?
 you need to first compile it, to do so, make sure you have mingw installed
 
-if you don't install it, you'll need it
+if you don't have it installed, install it, you'll need it
 
 after that, clone the repo and compile the main file:
 ```sh
