@@ -10,7 +10,10 @@ add .exe after drawscii if you're a windows user
 #include <algorithm>
 #include <ctime>
 #include <fstream>
+#include <filesystem>
+#include <cstdlib>
 using namespace std;
+namespace fs = filesystem;
 
 void clear()
 {
@@ -24,12 +27,31 @@ void sep()
 
 int main()
 {
-    string VERSION = "1.0";
     clear();
+    string VERSION = "1.0";
+    char* dataLoc;
+    bool windows;
+    #ifdef _WIN32
+        dataLoc = std::getenv("APPDATA");
+        windows = true;
+    #else
+        dataLoc = std::getenv("HOME");
+        windows = false;
+    #endif
+    if (!fs::exists(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii"))) { // somehow this works
+        if (!fs::create_directories(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii"))) {
+            std::cerr << "\x1b[1;31merror:\x1b[39m creating data folder for DRAWscii failed and app will exit (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+            exit(1);
+        }
+    }
+    fs::path dciData = fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii");
     cout << "welcome to\n";
     while (true)
     {
-        cout << "\
+        if (fs::exists(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii") / "settings" / "logodisabled")) {
+            cout << "DRAWscii\n";
+        } else {
+            cout << "\
 ┏━━━┳━━━┳━━━┳┓┏┓┏┓a greg project\n\
 ┗┓┏┓┃┏━┓┃┏━┓┃┃┃┃┃┃made in C++\n\
 ╋┃┃┃┃┗━┛┃┃╋┃┃┃┃┃┃┣━━┳━━┳┳┓\n\
@@ -37,6 +59,9 @@ int main()
 ┏┛┗┛┃┃┃┗┫┏━┓┣┓┏┓┏╋━━┃┗━┫┃┃\n\
 ┗━━━┻┛┗━┻┛╋┗┛┗┛┗┛┗━━┻━━┻┻┛\n\
 blindpaint, refurbished.\n\
+";
+        }
+    cout << "\
 (1) new canvas\n\
 (2) info\n\
 (3) settings\n\
@@ -197,9 +222,43 @@ this program was developed in C++; any other DRAWscii\n\
         }
         else if (menu_in == 3)
         {
+            if (!fs::exists(dciData / "settings")) {
+                if (!fs::create_directories(dciData / "settings")) {
+                    std::cerr << "\x1b[1;31merror:\x1b[39m creating settings folder for DRAWscii failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+                    break;
+                }
+            }
             clear();
-            cout << "work in progress!\n";
-            sep();
+            while (true) {
+                cout << "options:\n\
+(1) disable ASCII logo [" << (fs::exists(dciData / "settings" / "logodisabled") ? "✔️" : "✖️") << "]\n\
+(0) exit\n\
+>> ";
+                int options_in;
+                cin >> options_in;
+                if (options_in == 1) {
+                    clear();
+                    if (fs::exists(dciData / "settings" / "logodisabled")) { // this, too, somehow works
+                        if (fs::remove(dciData / "settings" / "logodisabled")) {
+                            continue;
+                        } else {
+                            std::cerr << "\x1b[1;31merror:\x1b[39m disabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+                        }
+                    } else {
+                        ofstream option(dciData / "settings" / "logodisabled");
+                        option.close();
+                    }
+                }
+                else if (options_in == 0) {
+                    clear();
+                    break;
+                }
+                else {
+                    clear();
+                    std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << options_in << "\x1b[0m\n";
+                    sep();
+                }
+            }
         }
         else if (menu_in == 0)
         {
