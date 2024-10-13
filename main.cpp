@@ -39,6 +39,7 @@ int main()
 blindpaint, refurbished.\n\
 (1) new canvas\n\
 (2) info\n\
+(3) settings\n\
 (0) exit\n\
 >> ";
         int menu_in;
@@ -96,7 +97,7 @@ blindpaint, refurbished.\n\
                     cout << "successfully painted pixel " << posX << "," << posY << " with " << paintVal << endl;
                     sep();
                 }
-                if (actions_in == 2)
+                else if (actions_in == 2)
                 {
                     clear();
                     cout << "enter Y1 (starting from 0):\n>> ";
@@ -119,21 +120,22 @@ blindpaint, refurbished.\n\
                     cout << "enter paint value (0 or 1):\n>> ";
                     int val;
                     cin >> val;
+                    val = max(0, min(1, val));
                     clear();
                     // yeah i stole this code from MY dll what are you gonna do huh??
-                    int startX = std::min(x1, x2);
-                    int endX = std::max(x1, x2);
-                    int startY = std::min(y1, y2);
-                    int endY = std::max(y1, y2);
+                    x1 = min(x1, x2);
+                    x2 = max(x1, x2);
+                    y1 = min(y1, y2);
+                    y2 = max(y1, y2);
 
-                    startX = std::max(0, startX);
-                    endX = std::min(canvasW - 1, endX);
-                    startY = std::max(0, startY);
-                    endY = std::min(canvasH - 1, endY);
+                    x1 = max(0, x1);
+                    x2 = min(canvasW - 1, x2);
+                    y1 = max(0, y1);
+                    y2 = min(canvasH - 1, y2);
 
-                    for (int i = startX; i <= endX; ++i)
+                    for (int i = x1; i <= x2; ++i)
                     {
-                        for (int j = startY; j <= endY; ++j)
+                        for (int j = y1; j <= y2; ++j)
                         {
                             canvas[i][j] = val;
                         }
@@ -141,7 +143,7 @@ blindpaint, refurbished.\n\
                     cout << "successfully filled region from pixel " << x1 << "," << y1 << " to " << x2 << "," << y2 << " with " << val << endl;
                     sep();
                 }
-                if (actions_in == 0)
+                else if (actions_in == 0)
                 {
                     clear();
                     cin.ignore();
@@ -153,9 +155,10 @@ blindpaint, refurbished.\n\
                     std::ofstream file(filename);
                     if (!file.is_open())
                     {
-                        std::cerr << "\x1b[1;31merror:\x1b[39m exporting canvas to file " << filename << " failed \x1b[0m\n";
-                        break;
+                        clear();
+                        std::cerr << "\x1b[1;31merror:\x1b[39m exporting canvas to file " << filename << " failed\x1b[0m\n";
                         sep();
+                        break;
                     }
                     file << "(tip: use a mono font for the best results!)\n";
                     for (auto row : canvas)
@@ -172,9 +175,15 @@ blindpaint, refurbished.\n\
                     cout << "successfully exported canvas to " << filename << endl;
                     break;
                 }
+                else
+                {
+                    clear();
+                    std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << actions_in << "\x1b[0m\n";
+                    sep();
+                }
             }
         }
-        if (menu_in == 2)
+        else if (menu_in == 2)
         {
             clear();
             cout << "DRAWscii " << VERSION << " / blindpaint 2.0+\n\
@@ -186,11 +195,23 @@ this program was developed in C++; any other DRAWscii\n\
     or malicious.\n";
             sep();
         }
-        if (menu_in == 0)
+        else if (menu_in == 3)
+        {
+            clear();
+            cout << "work in progress!\n";
+            sep();
+        }
+        else if (menu_in == 0)
         {
             clear();
             cout << "bye!\n";
             exit(0);
+        }
+        else
+        {
+            clear();
+            std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << menu_in << "\x1b[0m\n";
+            sep();
         }
     }
     return 0;
