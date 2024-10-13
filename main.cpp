@@ -48,7 +48,7 @@ int main()
     cout << "welcome to\n";
     while (true)
     {
-        if (fs::exists(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii") / "settings" / "logodisabled")) {
+        if (fs::exists(dciData / "settings" / "logodisabled")) {
             cout << "DRAWscii\n";
         } else {
             cout << "\
