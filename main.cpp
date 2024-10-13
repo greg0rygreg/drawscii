@@ -32,10 +32,10 @@ int main()
     char* dataLoc;
     bool windows;
     #ifdef _WIN32
-        dataLoc = std::getenv("APPDATA");
+        dataLoc = getenv("APPDATA");
         windows = true;
     #else
-        dataLoc = std::getenv("HOME");
+        dataLoc = getenv("HOME");
         windows = false;
     #endif
     if (!fs::exists(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii"))) { // somehow this works
