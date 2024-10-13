@@ -239,14 +239,16 @@ this program was developed in C++; any other DRAWscii\n\
                 if (options_in == 1) {
                     clear();
                     if (fs::exists(dciData / "settings" / "logodisabled")) { // this, too, somehow works
-                        if (fs::remove(dciData / "settings" / "logodisabled")) {
-                            continue;
-                        } else {
+                        if (!fs::remove(dciData / "settings" / "logodisabled")) {
                             std::cerr << "\x1b[1;31merror:\x1b[39m disabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
                         }
                     } else {
                         ofstream option(dciData / "settings" / "logodisabled");
-                        option.close();
+                        if (!option.is_open()) {
+                            std::cerr << "\x1b[1;31merror:\x1b[39m enabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+                        }  else { // i'm not sure if this else block does anything
+                            option.close();
+                        }
                     }
                 }
                 else if (options_in == 0) {
