@@ -13,6 +13,7 @@ add .exe after drawscii if you're a windows user
 #include <filesystem>
 #include <cstdlib>
 using namespace std;
+// how does this work??
 namespace fs = filesystem;
 
 void clear()
@@ -29,17 +30,19 @@ int main()
 {
   clear();
   string VERSION = "1.0";
-  char* dataLoc;
+  char *dataLoc;
   bool windows;
-  #ifdef _WIN32
-    dataLoc = getenv("APPDATA");
-    windows = true;
-  #else
-    dataLoc = getenv("HOME");
-    windows = false;
-  #endif
-  if (!fs::exists(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii"))) { // somehow this works
-    if (!fs::create_directories(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii"))) {
+#ifdef _WIN32
+  dataLoc = getenv("APPDATA");
+  windows = true;
+#else
+  dataLoc = getenv("HOME");
+  windows = false;
+#endif
+  if (!fs::exists(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii")))
+  { // somehow this works
+    if (!fs::create_directories(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii")))
+    {
       std::cerr << "\x1b[1;31merror:\x1b[39m creating data folder for DRAWscii failed and app will exit (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
       exit(1);
     }
@@ -48,25 +51,25 @@ int main()
   cout << "welcome to\n";
   while (true)
   {
-    if (fs::exists(dciData / "settings" / "logodisabled")) {
+    if (fs::exists(dciData / "settings" / "logodisabled"))
+    {
       cout << "DRAWscii\n";
-    } else {
-      cout << "\
-┏━━━┳━━━┳━━━┳┓┏┓┏┓a greg project\n\
-┗┓┏┓┃┏━┓┃┏━┓┃┃┃┃┃┃made in C++\n\
-╋┃┃┃┃┗━┛┃┃╋┃┃┃┃┃┃┣━━┳━━┳┳┓\n\
-╋┃┃┃┃┏┓┏┫┗━┛┃┗┛┗┛┃━━┫┏━╋╋┫\n\
-┏┛┗┛┃┃┃┗┫┏━┓┣┓┏┓┏╋━━┃┗━┫┃┃\n\
-┗━━━┻┛┗━┻┛╋┗┛┗┛┗┛┗━━┻━━┻┻┛\n\
-blindpaint, refurbished.\n\
-";
     }
-  cout << "\
-(1) new canvas\n\
-(2) info\n\
-(3) settings\n\
-(0) exit\n\
->> ";
+    else
+    {
+      cout << "┏━━━┳━━━┳━━━┳┓┏┓┏┓a greg project\n"
+           << "┗┓┏┓┃┏━┓┃┏━┓┃┃┃┃┃┃made in C++\n"
+           << "╋┃┃┃┃┗━┛┃┃╋┃┃┃┃┃┃┣━━┳━━┳┳┓\n"
+           << "╋┃┃┃┃┏┓┏┫┗━┛┃┗┛┗┛┃━━┫┏━╋╋┫\n"
+           << "┏┛┗┛┃┃┃┗┫┏━┓┣┓┏┓┏╋━━┃┗━┫┃┃\n"
+           << "┗━━━┻┛┗━┻┛╋┗┛┗┛┗┛┗━━┻━━┻┻┛\n"
+           << "blindpaint, refurbished.\n";
+    }
+    cout << "(1) new canvas\n"
+         << "(2) info\n"
+         << "(3) settings\n"
+         << "(0) exit\n"
+         << ">> ";
     int menu_in;
     cin >> menu_in;
     if (menu_in == 1)
@@ -93,11 +96,11 @@ blindpaint, refurbished.\n\
           cout << endl;
         }
         sep();
-        cout << "actions:\n\
-(1) paint pixel\n\
-(2) fill region\n\
-(0) save & exit\n\
->> ";
+        cout << "actions:\n"
+             << "(1) paint pixel\n"
+             << "(2) fill region\n"
+             << "(0) save & exit\n"
+             << ">> ";
         int actions_in;
         cin >> actions_in;
         if (actions_in == 1)
@@ -124,6 +127,7 @@ blindpaint, refurbished.\n\
         }
         else if (actions_in == 2)
         {
+          // reminds me of nested if-statements
           clear();
           cout << "enter Y1 (starting from 0):\n>> ";
           int x1;
@@ -211,51 +215,64 @@ blindpaint, refurbished.\n\
     else if (menu_in == 2)
     {
       clear();
-      cout << "DRAWscii " << VERSION << " / blindpaint 2.0+\n\
-blindpaint, refurbished.\n\
-licensed under MIT license\n\
-any changes YOU make are YOURS & YOURS ONLY\n\
-this program was developed in C++; any other DRAWscii\n\
-  version made in anything but C++ is either a fan-made,\n\
-  or malicious.\n";
+      cout << "DRAWscii " << VERSION << " / blindpaint 2.0+\n"
+           << "blindpaint, refurbished.\n"
+           << "licensed under MIT license\n"
+           << "any changes YOU make are YOURS & YOURS ONLY\n"
+           << "this program was developed in C++; any other DRAWscii" << // no more newline because i said so
+          " version made in anything but C++ is either a fan-made," << " or malicious.";
       sep();
     }
     else if (menu_in == 3)
     {
-      if (!fs::exists(dciData / "settings")) {
-        if (!fs::create_directories(dciData / "settings")) {
+      if (!fs::exists(dciData / "settings"))
+      {
+        if (!fs::create_directories(dciData / "settings"))
+        {
           std::cerr << "\x1b[1;31merror:\x1b[39m creating settings folder for DRAWscii failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
           break;
         }
       }
       clear();
-      while (true) {
+      while (true)
+      {
         cout << "options:\n\
-(1) disable ASCII logo [" << (fs::exists(dciData / "settings" / "logodisabled") ? "✔️" : "✖️") << "]\n\
+(1) disable ASCII logo ["
+             << (fs::exists(dciData / "settings" / "logodisabled") ? "✔️" : "✖️") << "]\n\
 (0) exit\n\
 >> ";
         int options_in;
         cin >> options_in;
-        if (options_in == 1) {
+        if (options_in == 1)
+        {
           clear();
-          if (fs::exists(dciData / "settings" / "logodisabled")) { // this, too, somehow works
-            if (!fs::remove(dciData / "settings" / "logodisabled")) {
+          if (fs::exists(dciData / "settings" / "logodisabled"))
+          { // this, too, somehow works
+            if (!fs::remove(dciData / "settings" / "logodisabled"))
+            {
               std::cerr << "\x1b[1;31merror:\x1b[39m disabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
             }
-          } else {
+          }
+          else
+          {
             ofstream option(dciData / "settings" / "logodisabled");
-            if (!option.is_open()) {
+            if (!option.is_open())
+            {
               std::cerr << "\x1b[1;31merror:\x1b[39m enabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
-            }  else { // i'm not sure if this else block does anything
+            }
+            else
+            { // i'm not sure if this else block does anything
               option.close();
             }
           }
         }
-        else if (options_in == 0) {
+        else if (options_in == 0)
+        {
           clear();
           break;
         }
-        else {
+        else
+        {
           clear();
           std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << options_in << "\x1b[0m\n";
           sep();
@@ -268,7 +285,7 @@ this program was developed in C++; any other DRAWscii\n\
       cout << "bye!\n";
       exit(0);
     }
-    else
+    else // I love comically large if-else-statements! :mhm:
     {
       clear();
       std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << menu_in << "\x1b[0m\n";
@@ -277,3 +294,5 @@ this program was developed in C++; any other DRAWscii\n\
   }
   return 0;
 }
+
+// that's the end of the source code
