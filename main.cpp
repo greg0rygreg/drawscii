@@ -1,9 +1,8 @@
-/*
-hey!
-if you want to compile this, run this command:
-g++ -o drawscii main.cpp
-add .exe after drawscii if you're a windows user
-*/
+// hey!
+// if you want to compile this, run this command:
+// g++ -o drawscii main.cpp
+// add .exe after drawscii if you're a windows user
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -59,10 +58,10 @@ int main()
     {
       cout << "┏━━━┳━━━┳━━━┳┓┏┓┏┓a greg project\n"
            << "┗┓┏┓┃┏━┓┃┏━┓┃┃┃┃┃┃made in C++\n"
-           << "╋┃┃┃┃┗━┛┃┃╋┃┃┃┃┃┃┣━━┳━━┳┳┓\n"
-           << "╋┃┃┃┃┏┓┏┫┗━┛┃┗┛┗┛┃━━┫┏━╋╋┫\n"
+           << " ┃┃┃┃┗━┛┃┃ ┃┃┃┃┃┃┣━━┳━━┳┳┓\n"
+           << " ┃┃┃┃┏┓┏┫┗━┛┃┗┛┗┛┃━━┫┏━╋╋┫\n"
            << "┏┛┗┛┃┃┃┗┫┏━┓┣┓┏┓┏╋━━┃┗━┫┃┃\n"
-           << "┗━━━┻┛┗━┻┛╋┗┛┗┛┗┛┗━━┻━━┻┻┛\n"
+           << "┗━━━┻┛┗━┻┛ ┗┛┗┛┗┛┗━━┻━━┻┻┛\n"
            << "blindpaint, refurbished.\n";
     }
     cout << "(1) new canvas\n"
@@ -83,6 +82,10 @@ int main()
       int canvasH;
       cin >> canvasH;
       clear();
+      // i still don't understand how this works,
+      // and i think i need to make myself a visual
+      // explanation of it (it's confusing for me)
+      // UPDATE: i understand it now, kinda...
       vector<vector<int>> canvas(canvasW, vector<int>(canvasH, 0));
       clear();
       while (true)
@@ -219,8 +222,8 @@ int main()
            << "blindpaint, refurbished.\n"
            << "licensed under MIT license\n"
            << "any changes YOU make are YOURS & YOURS ONLY\n"
-           << "this program was developed in C++; any other DRAWscii" << // no more newline because i said so
-          " version made in anything but C++ is either a fan-made," << " or malicious.";
+           << "this program was developed in C++; any other DRAWscii " // no more newline because i said so
+           << "version made in anything but C++ is either a fan-made, or malicious.";
       sep();
     }
     else if (menu_in == 3)
@@ -236,18 +239,19 @@ int main()
       clear();
       while (true)
       {
-        cout << "options:\n\
-(1) disable ASCII logo ["
-             << (fs::exists(dciData / "settings" / "logodisabled") ? "✔️" : "✖️") << "]\n\
-(0) exit\n\
->> ";
+        cout << "options:\n"
+        << "(1) disable ASCII logo ["
+        << (fs::exists(dciData / "settings" / "logodisabled") ? "✔️" : "✖️") << "]\n"
+        << "(0) exit\n"
+        << ">> ";
         int options_in;
         cin >> options_in;
         if (options_in == 1)
         {
           clear();
+          // this, too, somehow works
           if (fs::exists(dciData / "settings" / "logodisabled"))
-          { // this, too, somehow works
+          {
             if (!fs::remove(dciData / "settings" / "logodisabled"))
             {
               std::cerr << "\x1b[1;31merror:\x1b[39m disabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
