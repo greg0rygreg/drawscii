@@ -69,7 +69,7 @@ int main()
          << "(3) settings\n"
          << "(0) exit\n"
          << ">> ";
-    int menu_in;
+    unsigned int menu_in;
     cin >> menu_in;
     if (menu_in == 1)
     {
@@ -86,13 +86,13 @@ int main()
       // and i think i need to make myself a visual
       // explanation of it (it's confusing for me)
       // UPDATE: i understand it now, kinda...
-      vector<vector<int>> canvas(canvasW, vector<int>(canvasH, 0));
+      vector<vector<unsigned int>> canvas(canvasW, vector<unsigned int>(canvasH, 0));
       clear();
       while (true)
       {
-        for (vector<int> row : canvas)
+        for (vector<unsigned int> row : canvas)
         {
-          for (int col : row)
+          for (unsigned int col : row)
           {
             cout << (col == 0 ? "  " : "# ");
           }
@@ -104,7 +104,7 @@ int main()
              << "(2) fill region\n"
              << "(0) save & exit\n"
              << ">> ";
-        int actions_in;
+        unsigned int actions_in;
         cin >> actions_in;
         if (actions_in == 1)
         {
@@ -139,7 +139,6 @@ int main()
           cout << "enter X1 (starting from 0):\n>> ";
           int y1;
           cin >> y1;
-          clear();
           clear();
           cout << "enter Y2 (starting from 0):\n>> ";
           int x2;
@@ -193,9 +192,9 @@ int main()
             break;
           }
           file << "(tip: use a mono font for the best results!)\n";
-          for (auto row : canvas)
+          for (vector<unsigned int> row : canvas)
           {
-            for (int pixel : row)
+            for (unsigned int pixel : row)
             {
               file << (pixel == 1 ? "# " : "  ");
             }
@@ -299,4 +298,4 @@ int main()
   return 0;
 }
 
-// that's the end of the source code
+// that's the end of the ource code
