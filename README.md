@@ -20,15 +20,13 @@ i didn't mean to kill it but i think it's just been perfected (it's not.)
 if you want it to come back try forking it and adding what you want (no brainrot please for the love of god)
 
 ## how do i run it?
-you need to first compile it, to do so, make sure you have mingw installed
+you need to first compile it, to do so, make sure you have mingw, git and makebuild installed
 
-but BEFORE that, you need git, which is included with mingw iirc
-
-if you don't have it installed, install it, you'll need it
+if you don't have those installed, install them, you'll need them (you don't need makebuild on windows)
 
 after that, clone the repo and compile the main file:
 ```sh
-git clone https://github.com/greg0rygreg/drawscii.git drawscii
+git clone https://github.com/greg0rygreg/drawscii.git
 cd drawscii
-g++ -o drawscii main.cpp # add .exe after drawscii if you're a windows user
+make # use the old way in the main.cpp file if you're a windows user
 ```
