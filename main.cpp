@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <algorithm>
 #include <ctime>
@@ -25,12 +26,23 @@ void sep()
   cout << string(75, '-') << endl;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
   clear();
-  string VERSION = "1.0";
+  string VERSION = "1.1";
   char *dataLoc;
   bool windows;
+  bool danger = false;
+  if (argc > 1) {
+    // hate it when you need to do random shit
+    // so your app doesn't complain
+    for (int i = 0; i < argc; i++) {
+      if (strcmp(argv[i], "--danger") == 0) {
+        danger = true;
+        break;
+      }
+    }
+  }
 #ifdef _WIN32
   dataLoc = getenv("APPDATA");
   windows = true;
@@ -62,7 +74,7 @@ int main()
            << " ┃┃┃┃┏┓┏┫┗━┛┃┗┛┗┛┃━━┫┏━╋╋┫\n"
            << "┏┛┗┛┃┃┃┗┫┏━┓┣┓┏┓┏╋━━┃┗━┫┃┃\n"
            << "┗━━━┻┛┗━┻┛ ┗┛┗┛┗┛┗━━┻━━┻┻┛\n"
-           << "blindpaint, refurbished.\n";
+           << (danger ? "\x1b[1;31mDANGER MODE\x1b[0m\n" : "blindpaint, refurbished.\n");
     }
     cout << "(1) new canvas\n"
          << "(2) info\n"
@@ -74,14 +86,22 @@ int main()
     if (menu_in == 1)
     {
       clear();
-      cout << "enter amount of rows (don\'t get greedy!)\n>> ";
-      int canvasW;
+      cout << "enter amount of rows" << (!danger ? " (don\'t get greedy!)" : "") << "\n>> ";
+      unsigned int canvasW;
       cin >> canvasW;
       clear();
-      cout << "enter amount of columns (don\'t get greedy!)\n>> ";
-      int canvasH;
+      if (canvasW > (unsigned int)256 && danger == false) {
+        std::cerr << "\x1b[1;31merror:\x1b[39m canvas widths above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
+        break;
+      }
+      cout << "enter amount of columns" << (!danger ? " (don\'t get greedy!)" : "") << "\n>> ";
+      unsigned int canvasH;
       cin >> canvasH;
       clear();
+      if (canvasH > (unsigned int)256 && danger == false) {
+        std::cerr << "\x1b[1;31merror:\x1b[39m canvas heights above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
+        break;
+      }
       // i still don't understand how this works,
       // and i think i need to make myself a visual
       // explanation of it (it's confusing for me)
@@ -94,7 +114,7 @@ int main()
         {
           for (unsigned int col : row)
           {
-            cout << (col == 0 ? "  " : "# ");
+            cout << (col ? "# " : "  ");
           }
           cout << endl;
         }
@@ -112,12 +132,14 @@ int main()
           cout << "enter Y (starting from 0):\n>> ";
           int posX;
           cin >> posX;
-          posX = max(0, min(canvasW - 1, posX));
+          // horrid
+          posX = max(0, min((int)canvasW - 1, posX));
           clear();
           cout << "enter X (starting from 0):\n>> ";
           int posY;
           cin >> posY;
-          posY = max(0, min(canvasH - 1, posY));
+          // horrid
+          posY = max(0, min((int)canvasH - 1, posY));
           clear();
           cout << "enter paint value (0 or 1):\n>> ";
           int paintVal;
@@ -160,9 +182,9 @@ int main()
           y2 = max(y1, y2);
 
           x1 = max(0, x1);
-          x2 = min(canvasW - 1, x2);
+          x2 = min((int)canvasW - 1, x2);
           y1 = max(0, y1);
-          y2 = min(canvasH - 1, y2);
+          y2 = min((int)canvasH - 1, y2);
 
           for (int i = x1; i <= x2; ++i)
           {
@@ -196,7 +218,7 @@ int main()
           {
             for (unsigned int pixel : row)
             {
-              file << (pixel == 1 ? "# " : "  ");
+              file << (pixel ? "# " : "  ");
             }
             file << "\n";
           }
@@ -220,9 +242,10 @@ int main()
       cout << "DRAWscii " << VERSION << " / blindpaint 2.0+\n"
            << "blindpaint, refurbished.\n"
            << "licensed under MIT license\n"
+           << (danger ? "running in danger mode, do not complain in issues if your PC bursts into flames\n" : "")
            << "any changes YOU make are YOURS & YOURS ONLY\n"
            << "this program was developed in C++; any other DRAWscii " // no more newline because i said so
-           << "version made in anything but C++ is either a fan-made, or malicious.";
+           << "version made in anything but C++ is either a fan-made, or malicious.\n"; // that's some great karma for me
       sep();
     }
     else if (menu_in == 3)
@@ -298,4 +321,4 @@ int main()
   return 0;
 }
 
-// that's the end of the ource code
+// that's the end of the source code
