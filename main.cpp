@@ -132,19 +132,19 @@ int main(int argc, char* argv[])
         if (actions_in == 1)
         {
           clear();
-          cout << "enter Y (starting from 0):\n>> ";
+          cout << "enter row (starting from 0):\n>> ";
           int posX;
           cin >> posX;
           // horrid
           posX = max(0, min((int)canvasW - 1, posX));
           clear();
-          cout << "enter X (starting from 0):\n>> ";
+          cout << "enter column (starting from 0):\n>> ";
           int posY;
           cin >> posY;
           // horrid
           posY = max(0, min((int)canvasH - 1, posY));
           clear();
-          cout << "enter paint value (0 or 1):\n>> ";
+          cout << "enter value (0 or 1):\n>> ";
           int paintVal;
           cin >> paintVal;
           paintVal = max(0, min(1, paintVal));
@@ -157,23 +157,23 @@ int main(int argc, char* argv[])
         {
           // reminds me of nested if-statements
           clear();
-          cout << "enter Y1 (starting from 0):\n>> ";
+          cout << "enter row 1 (starting from 0):\n>> ";
           int x1;
           cin >> x1;
           clear();
-          cout << "enter X1 (starting from 0):\n>> ";
+          cout << "enter column 1 (starting from 0):\n>> ";
           int y1;
           cin >> y1;
           clear();
-          cout << "enter Y2 (starting from 0):\n>> ";
+          cout << "enter row 2 (starting from 0):\n>> ";
           int x2;
           cin >> x2;
           clear();
-          cout << "enter X2 (starting from 0):\n>> ";
+          cout << "enter column 2 (starting from 0):\n>> ";
           int y2;
           cin >> y2;
           clear();
-          cout << "enter paint value (0 or 1):\n>> ";
+          cout << "enter value (0 or 1):\n>> ";
           int val;
           cin >> val;
           val = max(0, min(1, val));
@@ -206,6 +206,7 @@ int main(int argc, char* argv[])
           string filename;
           cout << "enter file name:\n>> ";
           getline(cin, filename);
+          cout << "saving...";
           // i also stole this from MY dll
           time_t currtime = time(0);
           std::ofstream file(filename);
@@ -229,6 +230,7 @@ int main(int argc, char* argv[])
           file << "time created: " << dt << "made by: a very awesome person\n";
           clear();
           cout << "successfully exported canvas to " << filename << endl;
+          sep(); // turns out i forgot this
           break;
         }
         else
@@ -247,8 +249,8 @@ int main(int argc, char* argv[])
            << "licensed under MIT license\n"
            << (danger ? "running in danger mode, do not complain in issues if your PC bursts into flames\n" : "")
            << "any changes YOU make are YOURS & YOURS ONLY\n"
-           << "this program was developed in C++; any other DRAWscii " // no more newline because i said so
-           << "version made in anything but C++ is either a fan-made, or malicious.\n"; // that's some great karma for me
+           << "this program was developed in C++; any other DRAWscii "
+           << "version made in anything but C++ is either a fan-made, or malicious.\n";
       sep();
     }
     else if (menu_in == 3)
@@ -266,7 +268,7 @@ int main(int argc, char* argv[])
       {
         cout << "options:\n"
         << "(1) disable ASCII logo ["
-        << (fs::exists(dciData / "settings" / "logodisabled") ? "✔️" : "✖️") << "]\n"
+        << (fs::exists(dciData / "settings" / "logodisabled") ? "X" : " ") << "]\n"
         << "(0) exit\n"
         << ">> ";
         int options_in;
@@ -289,10 +291,7 @@ int main(int argc, char* argv[])
             {
               std::cerr << "\x1b[1;31merror:\x1b[39m enabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
             }
-            else
-            { // i'm not sure if this else block does anything
-              option.close();
-            }
+            option.close();
           }
         }
         else if (options_in == 0)
