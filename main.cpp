@@ -1,8 +1,10 @@
 // hey!
-// if you want to compile this on windows,
+// if you want to compile this ON WINDOWS,
 // run this command:
 // g++ -o drawscii.exe main.cpp
-// note that this is the old way make for windows users
+// if you get make running on windows
+// then cool, linux users can also
+// use this method
 
 #include <iostream>
 #include <string>
