@@ -1,7 +1,8 @@
 // hey!
-// if you want to compile this, run this command:
-// g++ -o drawscii main.cpp
-// add .exe after drawscii if you're a windows user
+// if you want to compile this on windows,
+// run this command:
+// g++ -o drawscii.exe main.cpp
+// note that this is the old way make for windows users
 
 #include <iostream>
 #include <string>
@@ -213,7 +214,7 @@ int main(int argc, char* argv[])
             sep();
             break;
           }
-          file << "(tip: use a mono font for the best results!)\n";
+          file << "(tip: use a mono font like Hack for the best results!)\n";
           for (vector<unsigned int> row : canvas)
           {
             for (unsigned int pixel : row)
