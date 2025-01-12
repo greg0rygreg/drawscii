@@ -20,7 +20,7 @@ i didn't mean to kill it but i think it's just been perfected (it's not.)
 if you want it to come back try forking it and adding what you want (no brainrot please for the love of god)
 
 ## how do i run it?
-you need to first compile it, to do so, make sure you have mingw, git and makebuild installed
+you need to first compile it, to do so, make sure you have CLang, git and makebuild installed
 
 if you don't have those installed, install them, you'll need them (you don't need makebuild on windows)
 
