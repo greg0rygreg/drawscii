@@ -15,8 +15,8 @@
 #include <fstream>
 #include <filesystem>
 #include <cstdlib>
+#include <chrono>
 using namespace std;
-// how does this work??
 namespace fs = filesystem;
 
 void clear()
@@ -29,19 +29,19 @@ void sep()
   cout << string(75, '-') << endl;
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
   clear();
-  string VERSION = "1.1";
-  char *dataLoc;
+  string VERSION = "1.2";
+  string dataLoc;
   bool windows;
-  bool danger = false;
+  bool danger = 0;
   if (argc > 1) {
     // hate it when you need to do random shit
     // so your app doesn't complain
     for (int i = 0; i < argc; i++) {
       if (strcmp(argv[i], "--danger") == 0) {
-        danger = true;
+        danger = 1;
         break;
       }
     }
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
   { // somehow this works
     if (!fs::create_directories(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii")))
     {
-      std::cerr << "\x1b[1;31merror:\x1b[39m creating data folder for DRAWscii failed and app will exit (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+      cout << "\x1b[1;31merror:\x1b[39m creating data folder for DRAWscii failed and app will exit (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
       exit(1);
     }
   }
@@ -94,15 +94,15 @@ int main(int argc, char* argv[])
       cin >> canvasW;
       clear();
       if (canvasW > (unsigned int)256 && danger == false) {
-        std::cerr << "\x1b[1;31merror:\x1b[39m canvas widths above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
+        cout << "\x1b[1;31merror:\x1b[39m canvas widths above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
         break;
       }
       cout << "enter amount of columns" << (!danger ? " (don\'t get greedy!)" : "") << "\n>> ";
       unsigned int canvasH;
       cin >> canvasH;
       clear();
-      if (canvasH > (unsigned int)256 && danger == false) {
-        std::cerr << "\x1b[1;31merror:\x1b[39m canvas heights above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
+      if (canvasH > 256 && danger == false) {
+        cout << "\x1b[1;31merror:\x1b[39m canvas heights above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
         break;
       }
       // i still don't understand how this works,
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
           {
             cout << (col ? "# " : "  ");
           }
-          cout << endl;
+          cout << "\n";
         }
         sep();
         cout << "actions:\n"
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
              << "(2) fill region\n"
              << "(0) save & exit\n"
              << ">> ";
-        unsigned int actions_in;
+        int actions_in;
         cin >> actions_in;
         if (actions_in == 1)
         {
@@ -207,13 +207,12 @@ int main(int argc, char* argv[])
           cout << "enter file name:\n>> ";
           getline(cin, filename);
           cout << "saving...";
-          // i also stole this from MY dll
-          time_t currtime = time(0);
+          time_t currtime = chrono::system_clock::to_time_t(chrono::system_clock::now());
           std::ofstream file(filename);
           if (!file.is_open())
           {
             clear();
-            std::cerr << "\x1b[1;31merror:\x1b[39m exporting canvas to file " << filename << " failed\x1b[0m\n";
+            cout << "\x1b[1;31merror:\x1b[39m exporting canvas to file " << filename << " failed\x1b[0m\n";
             sep();
             break;
           }
@@ -226,17 +225,17 @@ int main(int argc, char* argv[])
             }
             file << "\n";
           }
-          char *dt = ctime(&currtime);
-          file << "time created: " << dt << "made by: a very awesome person\n";
+          
+          file << "time created: " << ctime(&currtime) << "made by: a very awesome person\n";
           clear();
           cout << "successfully exported canvas to " << filename << endl;
-          sep(); // turns out i forgot this
+          sep();
           break;
         }
         else
         {
           clear();
-          std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << actions_in << "\x1b[0m\n";
+          cout << "\x1b[1;31merror:\x1b[39m no option made for input " << actions_in << "\x1b[0m\n";
           sep();
         }
       }
@@ -259,7 +258,7 @@ int main(int argc, char* argv[])
       {
         if (!fs::create_directories(dciData / "settings"))
         {
-          std::cerr << "\x1b[1;31merror:\x1b[39m creating settings folder for DRAWscii failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+          cout << "\x1b[1;31merror:\x1b[39m creating settings folder for DRAWscii failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
           break;
         }
       }
@@ -281,7 +280,7 @@ int main(int argc, char* argv[])
           {
             if (!fs::remove(dciData / "settings" / "logodisabled"))
             {
-              std::cerr << "\x1b[1;31merror:\x1b[39m disabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+              cout << "\x1b[1;31merror:\x1b[39m disabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
             }
           }
           else
@@ -289,7 +288,7 @@ int main(int argc, char* argv[])
             ofstream option(dciData / "settings" / "logodisabled");
             if (!option.is_open())
             {
-              std::cerr << "\x1b[1;31merror:\x1b[39m enabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+              cout << "\x1b[1;31merror:\x1b[39m enabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
             }
             option.close();
           }
@@ -302,7 +301,7 @@ int main(int argc, char* argv[])
         else
         {
           clear();
-          std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << options_in << "\x1b[0m\n";
+          cout << "\x1b[1;31merror:\x1b[39m no option made for input " << options_in << "\x1b[0m\n";
           sep();
         }
       }
@@ -316,7 +315,7 @@ int main(int argc, char* argv[])
     else // I love comically large if-else-statements! :mhm:
     {
       clear();
-      std::cerr << "\x1b[1;31merror:\x1b[39m no option made for input " << menu_in << "\x1b[0m\n";
+      cout << "\x1b[1;31merror:\x1b[39m no option made for input " << menu_in << "\x1b[0m\n";
       sep();
     }
   }
