@@ -1,8 +1,8 @@
 // hey!
 // if you want to compile this,
 // run these command:
-// windows: g++ -o drawscii.exe main.cpp
-// linux: g++ -o drawscii main.cpp
+// windows: g++ -o drawscii.exe main.cpp ./libclimenu.dll
+// linux: g++ -o drawscii main.cpp ./libclimenu.so
 
 // somehow removing half of the libs still makes the app work??
 // how does this black magic work
@@ -54,11 +54,7 @@ int main(int argc, char** argv)
   cout << "welcome to\n";
   while (true)
   {
-    if (fs::exists(dciData / "settings" / "logodisabled"))
-    {
-      cout << "DRAWscii\n";
-    }
-    else
+    if (!(fs::exists(dciData / "settings" / "logodisabled")))
     {
       cout << "┏━━━┳━━━┳━━━┳┓┏┓┏┓a greg project\n"
            << "┗┓┏┓┃┏━┓┃┏━┓┃┃┃┃┃┃made in C++\n"
@@ -69,7 +65,7 @@ int main(int argc, char** argv)
            << (danger ? "\x1b[1;31mDANGER MODE\x1b[0m\n" : "blindpaint, refurbished.\n");
     }
     int menu_in;
-    dciMenu.printAndGetInput(menu_in, 0);
+    dciMenu.printAndGetInput(menu_in, (fs::exists(dciData / "settings" / "logodisabled") ? 1 : 0));
     if (menu_in == 1)
     {
       clear();
@@ -77,7 +73,7 @@ int main(int argc, char** argv)
       unsigned int canvasW;
       cin >> canvasW;
       clear();
-      if (canvasW > (unsigned int)256 && danger == false) {
+      if (canvasW > 256 && danger == false) {
         cout << "\x1b[1;31merror:\x1b[39m canvas widths above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
         break;
       }
