@@ -1,38 +1,25 @@
 // hey!
-// if you want to compile this ON WINDOWS,
-// run this command:
-// g++ -o drawscii.exe main.cpp
-// if you get make running on windows
-// then cool, linux users can also
-// use this method
+// if you want to compile this,
+// run these command:
+// windows: g++ -o drawscii.exe main.cpp
+// linux: g++ -o drawscii main.cpp
 
+// somehow almost half of the libs still makes the app work??
+// how does this black magic work
 #include <iostream>
-#include <string>
 #include <cstring>
 #include <vector>
-#include <algorithm>
-#include <ctime>
 #include <fstream>
 #include <filesystem>
-#include <cstdlib>
-#include <chrono>
+#include "libclimenu.hpp"
 using namespace std;
+using namespace libclimenu;
 namespace fs = filesystem;
-
-void clear()
-{
-  cout << "\033[2J\033[H";
-}
-
-void sep()
-{
-  cout << string(75, '-') << endl;
-}
 
 int main(int argc, char** argv)
 {
   clear();
-  string VERSION = "1.2";
+  string VERSION = "1.3";
   string dataLoc;
   bool windows;
   bool danger = 0;
@@ -62,6 +49,8 @@ int main(int argc, char** argv)
     }
   }
   fs::path dciData = fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii");
+  Menu dciMenu("DRAWscii", VERSION, {"new canvas", "info", "settings"});
+  Menu actionsMenu("", "", {"paint pixel", "fill region"}, "save & exit");
   cout << "welcome to\n";
   while (true)
   {
@@ -79,13 +68,8 @@ int main(int argc, char** argv)
            << "┗━━━┻┛┗━┻┛ ┗┛┗┛┗┛┗━━┻━━┻┻┛\n"
            << (danger ? "\x1b[1;31mDANGER MODE\x1b[0m\n" : "blindpaint, refurbished.\n");
     }
-    cout << "(1) new canvas\n"
-         << "(2) info\n"
-         << "(3) settings\n"
-         << "(0) exit\n"
-         << ">> ";
-    unsigned int menu_in;
-    cin >> menu_in;
+    int menu_in;
+    dciMenu.printAndGetInput(menu_in, 0);
     if (menu_in == 1)
     {
       clear();
@@ -122,13 +106,9 @@ int main(int argc, char** argv)
           cout << "\n";
         }
         sep();
-        cout << "actions:\n"
-             << "(1) paint pixel\n"
-             << "(2) fill region\n"
-             << "(0) save & exit\n"
-             << ">> ";
+        cout << "actions:\n";
         int actions_in;
-        cin >> actions_in;
+        actionsMenu.printAndGetInput(actions_in, 0);
         if (actions_in == 1)
         {
           clear();
@@ -243,7 +223,7 @@ int main(int argc, char** argv)
     else if (menu_in == 2)
     {
       clear();
-      cout << "DRAWscii " << VERSION << " / blindpaint 2.0+\n"
+      cout << dciMenu.getFormattedVersion() << " / blindpaint 2.0+\n"
            << "blindpaint, refurbished.\n"
            << "licensed under MIT license\n"
            << (danger ? "running in danger mode, do not complain in issues if your PC bursts into flames\n" : "")
