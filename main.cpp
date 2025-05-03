@@ -4,7 +4,7 @@
 // windows: g++ -o drawscii.exe main.cpp
 // linux: g++ -o drawscii main.cpp
 
-// somehow almost half of the libs still makes the app work??
+// somehow removing half of the libs still makes the app work??
 // how does this black magic work
 #include <iostream>
 #include <cstring>
