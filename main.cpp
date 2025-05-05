@@ -8,6 +8,7 @@
 // how does this black magic work
 #include <iostream>
 #include <cstring>
+#include <string>
 #include <vector>
 #include <fstream>
 #include <filesystem>
@@ -18,17 +19,19 @@ namespace fs = filesystem;
 
 int main(int argc, char** argv)
 {
-  clear();
-  string VERSION = "1.3";
+  util::clear();
+  string VERSION = "1.4";
   string dataLoc;
-  bool windows;
-  bool danger = 0;
+  bool windows = true; // let's assume it's windows if for whatever reason the check at line 39 fails
+  bool danger = false;
   if (argc > 1) {
-    // hate it when you need to do random shit
-    // so your app doesn't complain
+    // this used to say that i hate
+    // doing useless strcmp shit but
+    // then i learned C and no longer
+    // hate this
     for (int i = 0; i < argc; i++) {
       if (strcmp(argv[i], "--danger") == 0) {
-        danger = 1;
+        danger = true;
         break;
       }
     }
@@ -44,13 +47,13 @@ int main(int argc, char** argv)
   { // somehow this works
     if (!fs::create_directories(fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii")))
     {
-      cout << "\x1b[1;31merror:\x1b[39m creating data folder for DRAWscii failed and app will exit (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+      error::error(string("creating data folder for DRAWscii failed and app will exit (try running as ") + (windows ? "administrator" : "root") + "?)");
       exit(1);
     }
   }
   fs::path dciData = fs::path(dataLoc) / (windows ? "DRAWscii" : ".DRAWscii");
   Menu dciMenu("DRAWscii", VERSION, {"new canvas", "info", "settings"});
-  Menu actionsMenu("", "", {"paint pixel", "fill region"}, "save & exit");
+  Menu actionsMenu("actions", "", {"paint pixel", "fill region"}, "save & exit");
   cout << "welcome to\n";
   while (true)
   {
@@ -65,24 +68,24 @@ int main(int argc, char** argv)
            << (danger ? "\x1b[1;31mDANGER MODE\x1b[0m\n" : "blindpaint, refurbished.\n");
     }
     int menu_in;
-    dciMenu.printAndGetInput(menu_in, (fs::exists(dciData / "settings" / "logodisabled") ? 1 : 0));
+    dciMenu.printAndGetInput(menu_in, (fs::exists(dciData / "settings" / "logodisabled") ? true : false));
     if (menu_in == 1)
     {
-      clear();
+      util::clear();
       cout << "enter amount of rows" << (!danger ? " (don\'t get greedy!)" : "") << "\n>> ";
       unsigned int canvasW;
       cin >> canvasW;
-      clear();
+      util::clear();
       if (canvasW > 256 && danger == false) {
-        cout << "\x1b[1;31merror:\x1b[39m canvas widths above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
+        error::error("canvas widths above 256 will not be accepted unless --danger argument is passed");
         break;
       }
       cout << "enter amount of columns" << (!danger ? " (don\'t get greedy!)" : "") << "\n>> ";
       unsigned int canvasH;
       cin >> canvasH;
-      clear();
+      util::clear();
       if (canvasH > 256 && danger == false) {
-        cout << "\x1b[1;31merror:\x1b[39m canvas heights above 256 will not be accepted unless --danger argument is passed\x1b[0m\n";
+        error::error("canvas heights above 256 will not be accepted unless --danger argument is passed");
         break;
       }
       // i still don't understand how this works,
@@ -90,7 +93,7 @@ int main(int argc, char** argv)
       // explanation of it (it's confusing for me)
       // UPDATE: i understand it now, kinda...
       vector<vector<unsigned int>> canvas(canvasW, vector<unsigned int>(canvasH, 0));
-      clear();
+      util::clear();
       while (true)
       {
         for (vector<unsigned int> row : canvas)
@@ -101,59 +104,58 @@ int main(int argc, char** argv)
           }
           cout << "\n";
         }
-        sep();
-        cout << "actions:\n";
+        util::sep();
         int actions_in;
-        actionsMenu.printAndGetInput(actions_in, 0);
+        actionsMenu.printAndGetInput(actions_in, 1, 0);
         if (actions_in == 1)
         {
-          clear();
+          util::clear();
           cout << "enter row (starting from 0):\n>> ";
           int posX;
           cin >> posX;
           // horrid
           posX = max(0, min((int)canvasW - 1, posX));
-          clear();
+          util::clear();
           cout << "enter column (starting from 0):\n>> ";
           int posY;
           cin >> posY;
           // horrid
           posY = max(0, min((int)canvasH - 1, posY));
-          clear();
+          util::clear();
           cout << "enter value (0 or 1):\n>> ";
           int paintVal;
           cin >> paintVal;
           paintVal = max(0, min(1, paintVal));
           canvas[posX][posY] = paintVal;
-          clear();
+          util::clear();
           cout << "successfully painted pixel " << posX << "," << posY << " with " << paintVal << endl;
-          sep();
+          util::sep();
         }
         else if (actions_in == 2)
         {
           // reminds me of nested if-statements
-          clear();
+          util::clear();
           cout << "enter row 1 (starting from 0):\n>> ";
           int x1;
           cin >> x1;
-          clear();
+          util::clear();
           cout << "enter column 1 (starting from 0):\n>> ";
           int y1;
           cin >> y1;
-          clear();
+          util::clear();
           cout << "enter row 2 (starting from 0):\n>> ";
           int x2;
           cin >> x2;
-          clear();
+          util::clear();
           cout << "enter column 2 (starting from 0):\n>> ";
           int y2;
           cin >> y2;
-          clear();
+          util::clear();
           cout << "enter value (0 or 1):\n>> ";
           int val;
           cin >> val;
           val = max(0, min(1, val));
-          clear();
+          util::clear();
           // yeah i stole this code from MY dll what are you gonna do huh??
           x1 = min(x1, x2);
           x2 = max(x1, x2);
@@ -173,23 +175,22 @@ int main(int argc, char** argv)
             }
           }
           cout << "successfully filled region from pixel " << x1 << "," << y1 << " to " << x2 << "," << y2 << " with " << val << endl;
-          sep();
+          util::sep();
         }
         else if (actions_in == 0)
         {
-          clear();
+          util::clear();
           cin.ignore();
           string filename;
           cout << "enter file name:\n>> ";
           getline(cin, filename);
-          cout << "saving...";
           time_t currtime = chrono::system_clock::to_time_t(chrono::system_clock::now());
           std::ofstream file(filename);
           if (!file.is_open())
           {
-            clear();
+            util::clear();
             cout << "\x1b[1;31merror:\x1b[39m exporting canvas to file " << filename << " failed\x1b[0m\n";
-            sep();
+            util::sep();
             break;
           }
           file << "(tip: use a mono font like Hack for the best results!)\n";
@@ -203,22 +204,22 @@ int main(int argc, char** argv)
           }
           
           file << "time created: " << ctime(&currtime) << "made by: a very awesome person\n";
-          clear();
+          util::clear();
           cout << "successfully exported canvas to " << filename << endl;
-          sep();
+          util::sep();
           break;
         }
         else
         {
-          clear();
-          cout << "\x1b[1;31merror:\x1b[39m no option made for input " << actions_in << "\x1b[0m\n";
-          sep();
+          util::clear();
+          error::inputErr(actions_in);
+          util::sep();
         }
       }
     }
     else if (menu_in == 2)
     {
-      clear();
+      util::clear();
       cout << dciMenu.getFormattedVersion() << " / blindpaint 2.0+\n"
            << "blindpaint, refurbished.\n"
            << "licensed under MIT license\n"
@@ -226,7 +227,7 @@ int main(int argc, char** argv)
            << "any changes YOU make are YOURS & YOURS ONLY\n"
            << "this program was developed in C++; any other DRAWscii "
            << "version made in anything but C++ is either a fan-made, or malicious.\n";
-      sep();
+      util::sep();
     }
     else if (menu_in == 3)
     {
@@ -234,13 +235,14 @@ int main(int argc, char** argv)
       {
         if (!fs::create_directories(dciData / "settings"))
         {
-          cout << "\x1b[1;31merror:\x1b[39m creating settings folder for DRAWscii failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+          error::error(string("creating settings folder for DRAWscii failed (try running as ") + (windows ? "administrator" : "root") + "?)");
           break;
         }
       }
-      clear();
+      util::clear();
       while (true)
       {
+        // will remake this once i have more time (it's 8:35 PM and i must rest at 9:00 PM)
         cout << "options:\n"
         << "(1) disable ASCII logo ["
         << (fs::exists(dciData / "settings" / "logodisabled") ? "X" : " ") << "]\n"
@@ -250,13 +252,13 @@ int main(int argc, char** argv)
         cin >> options_in;
         if (options_in == 1)
         {
-          clear();
+          util::clear();
           // this, too, somehow works
           if (fs::exists(dciData / "settings" / "logodisabled"))
           {
             if (!fs::remove(dciData / "settings" / "logodisabled"))
             {
-              cout << "\x1b[1;31merror:\x1b[39m disabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+              error::error(string("disabling setting failed (try running as ") + (windows ? "administrator" : "root") + "?)");
             }
           }
           else
@@ -264,35 +266,35 @@ int main(int argc, char** argv)
             ofstream option(dciData / "settings" / "logodisabled");
             if (!option.is_open())
             {
-              cout << "\x1b[1;31merror:\x1b[39m enabling setting failed (try running as " << (windows ? "administrator" : "superuser") << "?)\x1b[0m\n";
+              error::error(string("enabling setting failed (try running as ") + (windows ? "administrator" : "root") + "?)");
             }
             option.close();
           }
         }
         else if (options_in == 0)
         {
-          clear();
+          util::clear();
           break;
         }
         else
         {
-          clear();
-          cout << "\x1b[1;31merror:\x1b[39m no option made for input " << options_in << "\x1b[0m\n";
-          sep();
+          util::clear();
+          error::inputErr(options_in);
+          util::sep();
         }
       }
     }
     else if (menu_in == 0)
     {
-      clear();
+      util::clear();
       cout << "bye!\n";
       exit(0);
     }
     else // I love comically large if-else-statements! :mhm:
     {
-      clear();
-      cout << "\x1b[1;31merror:\x1b[39m no option made for input " << menu_in << "\x1b[0m\n";
-      sep();
+      util::clear();
+      error::inputErr(menu_in);
+      util::sep();
     }
   }
   return 0;
