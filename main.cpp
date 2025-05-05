@@ -1,8 +1,8 @@
 // hey!
 // if you want to compile this,
 // run these command:
-// windows: g++ -o drawscii.exe main.cpp ./libclimenu.dll
-// linux: g++ -o drawscii main.cpp ./libclimenu.so
+// windows: g++ -o drawscii.exe main.cpp ./libmenu.dll
+// linux: g++ -o drawscii main.cpp ./libmenu.so
 
 // somehow removing half of the libs still makes the app work??
 // how does this black magic work
@@ -11,9 +11,9 @@
 #include <vector>
 #include <fstream>
 #include <filesystem>
-#include "libclimenu.hpp"
+#include "libmenu.hpp"
 using namespace std;
-using namespace libclimenu;
+using namespace libmenu;
 namespace fs = filesystem;
 
 int main(int argc, char** argv)

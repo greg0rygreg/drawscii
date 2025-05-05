@@ -1,9 +1,9 @@
-#ifndef LIBCLIMENU_HPP
-#define LIBCLIMENU_HPP
+#ifndef libmenu_HPP
+#define libmenu_HPP
 #include <string>
 #include <vector>
 
-namespace libclimenu {
+namespace libmenu {
     //contains information about your menu
     class Menu {
         public:
@@ -20,7 +20,7 @@ namespace libclimenu {
         /*print the main menu and get user input and put it
         on `optionInt`
         `bool printName`: if 1, print the name of the app defined
-        in your `libclimenu::Menu.name` and version in `libclimenu::Menu.version`
+        in your `libmenu::Menu.name` and version in `libmenu::Menu.version`
         
         else, don't print the name and version of the app*/
         void printAndGetInput(int &optionInt, bool printName);
@@ -41,5 +41,5 @@ namespace libclimenu {
     void warning(std::string info);
 }
 
-#endif // LIBCLIMENU_HPP
+#endif // libmenu_HPP
 // (no compile)
