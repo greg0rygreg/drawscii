@@ -20,13 +20,13 @@ i didn't mean to kill it but i think it's just been perfected (it's not.)
 if you want it to come back try forking it and adding what you want (no brainrot please for the love of god)
 
 ## how do i run it?
-you need to first compile it, to do so, make sure you have CLang, git and makebuild installed
+you need to first compile it, to do so, make sure you have CLang/mingw and git installed
 
-if you don't have those installed, install them, you'll need them (you don't need makebuild on windows)
+if you don't have those installed, install them
 
-after that, clone the repo and compile the main file:
+after that, clone the repo and compile the main.cpp file:
 ```sh
 git clone https://github.com/greg0rygreg/drawscii.git
 cd drawscii
-make # use the old way in the main.cpp file if you're a windows user
+# follow the instructions on the top comment of main.cpp
 ```

@@ -1,7 +1,9 @@
-#ifndef libmenu_HPP
-#define libmenu_HPP
+#ifndef LIBMENU_HPP
+#define LIBMENU_HPP
+#ifdef __cplusplus
 #include <string>
 #include <vector>
+#endif
 
 namespace libmenu {
     //contains information about your menu
@@ -43,13 +45,14 @@ namespace libmenu {
         std::string getFormattedVersion(bool includeVersion);
         //get a formatted string of the name and version of the menu
         std::string getFormattedVersion();
-        private:
+        protected:
+        //exit text
         std::string exitText = "exit";
     };
     namespace util {
         //clear the screen for the next operation
         void clear();
-        //seperate the screen by exactly 75 hyphens
+        //seperate the screen by exactly 75 equal signs
         void sep();
     }
     namespace error {
@@ -63,6 +66,5 @@ namespace libmenu {
         void inputErr(int input);
     }
 }
-
 #endif // libmenu_HPP
 // (no compile)
