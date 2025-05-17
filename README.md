@@ -1,32 +1,33 @@
 # DRAWscii - blindpaint, refurbished.
-DRAWscii is like blindpaint 2, blindpaint but, in my opinion, better.
+ueghuhuhri<s i remade blin dpait yeah
 
-its objective of blindly painting is gone, sad, i know. but atleast you get to know what you're doing!!
-
-## what does it have, however?
-DRAWscii will have:
+## what does DRAWscii have that differs from blindpaint?
+DRAWscii has:
 1. artwork viewing
 	- unlike blindpaint, you can see what you're drawing and improve it
-2. cross-platform support
-	- just like blindpaint, except you need to compile it yourself
-3. DLL/shared library file (not done)
-	- again, like blindpaint, but you need to compile it yourself
-4. compiled code
+2. ~~absolute ZERO golang in sight on the source code~~ compiled code
 	- hell yeah no more binary size measuring in megabytes!!!!!!!!!!!!!!!!!!!!
 
-## why did you kill blindpaint?
-i didn't mean to kill it but i think it's just been perfected (it's not.)
+## where blindpaint go?
+i think it's just been perfected (kinda) so it just... sits there (i forgot how to code in golang so no updates to it)
 
-if you want it to come back try forking it and adding what you want (no brainrot please for the love of god)
+i encourage you to try and fork it to add what you want (i would like to see how adding italian brainrot to it would turn out)
 
-## how do i run it?
-you need to first compile it, to do so, make sure you have CLang/mingw and git installed
+## how do i make DRAWscii walk twice?
+first, you need to compile it; to do so, make sure you have CLang/mingw and git installed
 
 if you don't have those installed, install them
 
-after that, clone the repo and compile the main.cpp file:
+after that, clone this repo (or download it) and compile the main.cpp file:
 ```sh
 git clone https://github.com/greg0rygreg/drawscii.git
 cd drawscii
-# follow the instructions on the top comment of main.cpp
+# follow the instructions on the bottom comment of main.cpp (use clang++ instead of g++ if you installed CLang)
+./drawscii # add .exe if you're using windows
 ```
+
+# KNOWN BUGS
+- unicode characters (like the logo for DRAWscii) and ANSI escape codes don't work correctly on windows
+
+i don't know how to fix it but if i find out i will fix it ASAP (will also update libmenu because of `util::error`, `util::clear`, etc.)
+
