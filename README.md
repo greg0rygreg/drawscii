@@ -1,4 +1,4 @@
-# DRAWscii - blindpaint, refurbished.
+# DRAWscii - blindpaint, refurbished
 ueghuhuhri<s i remade blin dpait yeah
 
 ## what does DRAWscii have that differs from blindpaint?
