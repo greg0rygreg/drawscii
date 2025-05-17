@@ -1,11 +1,4 @@
-// hey!
-// if you want to compile this,
-// run these command:
-// windows: g++ -o drawscii.exe main.cpp ./libmenu.dll
-// linux: g++ -o drawscii main.cpp ./libmenu.so
-
-// somehow removing half of the libs still makes the app work??
-// how does this black magic work
+#include <chrono>
 #include <iostream>
 #include <cstring>
 #include <string>
@@ -22,7 +15,7 @@ int main(int argc, char** argv)
   util::clear();
   string VERSION = "1.4";
   string dataLoc;
-  bool windows = true; // let's assume it's windows if for whatever reason the check at line 39 fails
+  bool windows = true; // let's assume it's windows if for whatever reason the check at line 32 fails
   bool danger = false;
   if (argc > 1) {
     // this used to say that i hate
@@ -184,7 +177,7 @@ int main(int argc, char** argv)
           string filename;
           cout << "enter file name:\n>> ";
           getline(cin, filename);
-          time_t currtime = chrono::system_clock::to_time_t(chrono::system_clock::now());
+          time_t currtime = chrono::high_resolution_clock::to_time_t(chrono::system_clock::now());
           std::ofstream file(filename);
           if (!file.is_open())
           {
@@ -207,6 +200,7 @@ int main(int argc, char** argv)
           util::clear();
           cout << "successfully exported canvas to " << filename << endl;
           util::sep();
+          file.close();
           break;
         }
         else
@@ -235,7 +229,7 @@ int main(int argc, char** argv)
       {
         if (!fs::create_directories(dciData / "settings"))
         {
-          error::error(string("creating settings folder for DRAWscii failed (try running as ") + (windows ? "administrator" : "root") + "?)");
+          error::error(string("creating settings folder for DRAWscii failed - try running as ") + (windows ? "administrator?" : "root?"));
           break;
         }
       }
@@ -258,7 +252,7 @@ int main(int argc, char** argv)
           {
             if (!fs::remove(dciData / "settings" / "logodisabled"))
             {
-              error::error(string("disabling setting failed (try running as ") + (windows ? "administrator" : "root") + "?)");
+              error::error(string("disabling setting failed - try running as ") + (windows ? "administrator?" : "root?"));
             }
           }
           else
@@ -266,7 +260,7 @@ int main(int argc, char** argv)
             ofstream option(dciData / "settings" / "logodisabled");
             if (!option.is_open())
             {
-              error::error(string("enabling setting failed (try running as ") + (windows ? "administrator" : "root") + "?)");
+              error::error(string("enabling setting failed - try running as ") + (windows ? "administrator?" : "root?"));
             }
             option.close();
           }
@@ -301,3 +295,6 @@ int main(int argc, char** argv)
 }
 
 // that's the end of the source code
+// compilation:
+// windows: g++ -o drawscii.exe main.cpp libmenu.cpp
+// linux: g++ -o drawscii main.cpp libmenu.cpp
