@@ -1,5 +1,5 @@
 flags = -Wall -g
-cc = g++ $(flags)
+cc = clang++ $(flags)
 ifeq ($(OS),Windows_NT)
 	e = .exe
 	del = del /Q

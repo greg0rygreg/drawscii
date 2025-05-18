@@ -14,7 +14,7 @@ i think it's just been perfected (kinda) so it just... sits there (i forgot how 
 i encourage you to try and fork it to add what you want (i would like to see how adding italian brainrot to it would turn out)
 
 ## how do i make DRAWscii walk twice?
-first, you need to compile it; to do so, make sure you have CLang/mingw, make and git installed
+first, you need to compile it; to do so, make sure you have CLang/GNU Compiler Collection, make and git installed
 
 if you don't have those installed, install them
 
@@ -22,7 +22,7 @@ after that, clone this repo (or download it) and compile the main.cpp file by us
 ```sh
 git clone https://github.com/greg0rygreg/drawscii.git
 cd drawscii
-make # change g++ to clang++ in the Makefile if you installed CLang
+make # change clang++ to g++ in the Makefile if you installed the GNU Compiler Collection
 ./drawscii # add .exe if you're using windows
 ```
 
