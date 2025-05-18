@@ -14,20 +14,21 @@ i think it's just been perfected (kinda) so it just... sits there (i forgot how 
 i encourage you to try and fork it to add what you want (i would like to see how adding italian brainrot to it would turn out)
 
 ## how do i make DRAWscii walk twice?
-first, you need to compile it; to do so, make sure you have CLang/mingw and git installed
+first, you need to compile it; to do so, make sure you have CLang/mingw, make and git installed
 
 if you don't have those installed, install them
 
-after that, clone this repo (or download it) and compile the main.cpp file:
+after that, clone this repo (or download it) and compile the main.cpp file by using `make`:
 ```sh
 git clone https://github.com/greg0rygreg/drawscii.git
 cd drawscii
-# follow the instructions on the bottom comment of main.cpp (use clang++ instead of g++ if you installed CLang)
+make # change g++ to clang++ in the Makefile if you installed CLang
 ./drawscii # add .exe if you're using windows
 ```
 
 # KNOWN BUGS
-- unicode characters (like the logo for DRAWscii) and ANSI escape codes don't work correctly on windows
+- ~~unicode characters (like the logo for DRAWscii) and ANSI escape codes don't work correctly on windows~~
 
-i don't know how to fix it but if i find out i will fix it ASAP (will also update libmenu because of `util::error`, `util::clear`, etc.)
+~~i don't know how to fix it but if i find out i will fix it ASAP (will also update libmenu because of `util::error`, `util::clear`, etc.)~~
 
+fixed i think??? we need windows testers PLEASE

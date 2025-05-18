@@ -296,5 +296,4 @@ int main(int argc, char** argv)
 
 // that's the end of the source code
 // compilation:
-// windows: g++ -o drawscii.exe main.cpp libmenu.cpp
-// linux: g++ -o drawscii main.cpp libmenu.cpp
+// make
