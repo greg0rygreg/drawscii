@@ -12,6 +12,9 @@ namespace fs = filesystem;
 
 int main(int argc, char** argv)
 {
+  #if _WIN32
+    system("chcp 65001");
+  #endif
   util::clear();
   string VERSION = "1.4";
   string dataLoc;
@@ -81,10 +84,7 @@ int main(int argc, char** argv)
         error::error("canvas heights above 256 will not be accepted unless --danger argument is passed");
         break;
       }
-      // i still don't understand how this works,
-      // and i think i need to make myself a visual
-      // explanation of it (it's confusing for me)
-      // UPDATE: i understand it now, kinda...
+      // pretty sure C would've been a better option now
       vector<vector<unsigned int>> canvas(canvasW, vector<unsigned int>(canvasH, 0));
       util::clear();
       while (true)

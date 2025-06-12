@@ -49,6 +49,28 @@ namespace libmenu {
         //exit text
         std::string exitText = "exit";
     };
+    //contains information about your selection menu
+    class SelMenu {
+        public:
+        //name of the menu
+        std::string action;
+        //options of the menu
+        std::vector<std::string> options;
+        //menu configurator/constructor
+        SelMenu(std::string action, std::vector<std::string> options, std::string cancelText);
+        //menu configurator/constructor
+        SelMenu(std::string action, std::vector<std::string> options);
+        /*print the main menu and get user input and put it
+        on `optionInt`
+        `bool printName`: if 1, print the name of the app defined
+        in your `libmenu::Menu.name` and version in `libmenu::Menu.version`
+        
+        else, don't print the name and version of the app*/
+        void printAndGetInput(int &optionInt, bool printAction);
+        protected:
+        //cancel text
+        std::string cancelText = "cancel";
+    };
     namespace util {
         //clear the screen for the next operation
         void clear();

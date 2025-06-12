@@ -1,3 +1,8 @@
+# READ THIS FIRST
+DRAWscii is no longer being developed
+
+there will be NO further updates
+
 # DRAWscii - blindpaint, refurbished
 ueghuhuhri<s i remade blin dpait yeah
 
